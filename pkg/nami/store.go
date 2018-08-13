@@ -5,8 +5,8 @@ import (
 )
 
 type Store interface {
-	Get(key string) (interface{}, bool)
-	Set(key string, value interface{})
+	Get(key string) ([]byte, bool)
+	Set(key string, value []byte)
 }
 
 func generateKey(origin, destination string) string {

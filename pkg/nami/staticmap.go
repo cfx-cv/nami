@@ -16,7 +16,7 @@ const (
 func (d *Nami) FindStaticMap(origin, destination, apiKey string) (StaticMap, error) {
 	key := generateKey(origin, destination)
 	if value, ok := d.store.Get(key); ok {
-		return value.(StaticMap), nil
+		return StaticMap(value), nil
 	}
 
 	polyline, err := d.findDirectionPolyline(origin, destination, apiKey)

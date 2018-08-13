@@ -16,7 +16,7 @@ type DirectionPolyline string
 func (d *Nami) findDirectionPolyline(origin, destination, apiKey string) (DirectionPolyline, error) {
 	key := generateKey(origin, destination)
 	if value, ok := d.store.Get(key); ok {
-		return value.(DirectionPolyline), nil
+		return DirectionPolyline(value), nil
 	}
 
 	url := buildDirectionsURL(origin, destination, apiKey)
@@ -30,7 +30,7 @@ func (d *Nami) findDirectionPolyline(origin, destination, apiKey string) (Direct
 	if err != nil {
 		return "", err
 	}
-	defer d.store.Set(key, result)
+	defer d.store.Set(key, []byte(result))
 	return result, nil
 }
 
