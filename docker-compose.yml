@@ -15,6 +15,7 @@ services:
       - db
     networks:
       default:
+      gofeed:
         aliases:
           - nami_app
 
@@ -27,5 +28,5 @@ volumes:
   redis_volume:
 
 networks:
-  default:
-    name: gofeed-network
+  gofeed:
+    external: true
