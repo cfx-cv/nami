@@ -1,0 +1,31 @@
+version: '3.5'
+
+services:
+  app:
+    build: .
+    command: ["./scripts/wait-for-it.sh", "db:6379", "--", "./scripts/run.sh"]
+    environment:
+      - REDIS_URL=${REDIS_URL}
+      - REDIS_EXPIRATION=${REDIS_EXPIRATION}
+    volumes:
+      - .:/go/src/github.com/cfx-cv/nami:z
+    expose:
+      - "80"
+    depends_on:
+      - db
+    networks:
+      default:
+        aliases:
+          - nami_app
+
+  db:
+    image: redis:4.0
+    volumes:
+      - redis_volume:/data
+
+volumes:
+  redis_volume:
+
+networks:
+  default:
+    name: gofeed-network
