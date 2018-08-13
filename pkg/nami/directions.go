@@ -8,25 +8,25 @@ import (
 )
 
 const (
-	directionsURL = "https://maps.googleapis.com/maps/api/directions/json?"
+	directionURL = "https://maps.googleapis.com/maps/api/directions/json?"
 )
 
 type DirectionPolyline string
 
 func (d *Nami) findDirectionPolyline(origin, destination, apiKey string) (DirectionPolyline, error) {
-	key := generateKey(origin, destination)
+	key := generateDirectionKey(origin, destination)
 	if value, ok := d.store.Get(key); ok {
 		return DirectionPolyline(value), nil
 	}
 
-	url := buildDirectionsURL(origin, destination, apiKey)
+	url := buildDirectionURL(origin, destination, apiKey)
 	resp, err := http.Get(url)
 	if err != nil {
 		return "", err
 	}
 	defer resp.Body.Close()
 
-	result, err := parseDirectionsResponse(resp)
+	result, err := parseDirectionResponse(resp)
 	if err != nil {
 		return "", err
 	}
@@ -34,15 +34,15 @@ func (d *Nami) findDirectionPolyline(origin, destination, apiKey string) (Direct
 	return result, nil
 }
 
-func buildDirectionsURL(origin, destination, apiKey string) string {
+func buildDirectionURL(origin, destination, apiKey string) string {
 	u := url.Values{}
-	u.Add("origins", origin)
-	u.Add("destinations", destination)
+	u.Add("origin", origin)
+	u.Add("destination", destination)
 	u.Add("key", apiKey)
-	return staticmapURL + u.Encode()
+	return directionURL + u.Encode()
 }
 
-func parseDirectionsResponse(resp *http.Response) (DirectionPolyline, error) {
+func parseDirectionResponse(resp *http.Response) (DirectionPolyline, error) {
 	var body struct {
 		Routes []struct {
 			OverviewPolyline struct {

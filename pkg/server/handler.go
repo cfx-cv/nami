@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"net/url"
@@ -18,7 +19,8 @@ func (s *Server) staticmap(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, err = w.Write(result); err != nil {
+	data := map[string]interface{}{"staticmap": result}
+	if err = json.NewEncoder(w).Encode(data); err != nil {
 		log.Print(err)
 		return
 	}

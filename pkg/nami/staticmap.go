@@ -2,7 +2,7 @@ package nami
 
 import (
 	"fmt"
-	"log"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 )
@@ -14,7 +14,7 @@ const (
 )
 
 func (d *Nami) FindStaticMap(origin, destination, apiKey string) (StaticMap, error) {
-	key := generateKey(origin, destination)
+	key := generateStaticMapKey(origin, destination)
 	if value, ok := d.store.Get(key); ok {
 		return StaticMap(value), nil
 	}
@@ -31,9 +31,8 @@ func (d *Nami) FindStaticMap(origin, destination, apiKey string) (StaticMap, err
 	}
 	defer resp.Body.Close()
 
-	var staticmap StaticMap
-	if _, err := resp.Body.Read(staticmap); err != nil {
-		log.Print(err)
+	staticmap, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
 		return nil, err
 	}
 	d.store.Set(key, staticmap)
@@ -43,7 +42,7 @@ func (d *Nami) FindStaticMap(origin, destination, apiKey string) (StaticMap, err
 func buildStaticMapURL(origin string, polyline DirectionPolyline, apiKey string) string {
 	u := url.Values{}
 	u.Add("center", origin)
-	u.Add("size", "size=400x400")
+	u.Add("size", "400x400")
 	u.Add("path", fmt.Sprintf("weight:5|color:blue|enc:%s", polyline))
 	u.Add("key", apiKey)
 	return staticmapURL + u.Encode()

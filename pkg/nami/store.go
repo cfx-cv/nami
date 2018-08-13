@@ -9,6 +9,10 @@ type Store interface {
 	Set(key string, value []byte)
 }
 
-func generateKey(origin, destination string) string {
-	return fmt.Sprintf("%s:%s", origin, destination)
+func generateDirectionKey(origin, destination string) string {
+	return fmt.Sprintf("directions:%s:%s", origin, destination)
+}
+
+func generateStaticMapKey(origin, destination string) string {
+	return fmt.Sprintf("staticmap:%s:%s", origin, destination)
 }
