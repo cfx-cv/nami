@@ -11,7 +11,7 @@ const (
 	directionURL = "https://maps.googleapis.com/maps/api/directions/json?"
 )
 
-type DirectionPolyline string
+type DirectionPolyline []byte
 
 func (d *Nami) findDirectionPolyline(origin, destination, apiKey string) (DirectionPolyline, error) {
 	key := generateDirectionKey(origin, destination)
@@ -22,13 +22,13 @@ func (d *Nami) findDirectionPolyline(origin, destination, apiKey string) (Direct
 	url := buildDirectionURL(origin, destination, apiKey)
 	resp, err := http.Get(url)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer resp.Body.Close()
 
 	result, err := parseDirectionResponse(resp)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer d.store.Set(key, []byte(result))
 	return result, nil
@@ -46,7 +46,7 @@ func parseDirectionResponse(resp *http.Response) (DirectionPolyline, error) {
 	var body struct {
 		Routes []struct {
 			OverviewPolyline struct {
-				Points DirectionPolyline `json:"points"`
+				Points string `json:"points"`
 			} `json:"overview_polyline"`
 		} `json:"routes"`
 
@@ -54,11 +54,11 @@ func parseDirectionResponse(resp *http.Response) (DirectionPolyline, error) {
 	}
 
 	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
-		return "", err
+		return nil, err
 	}
 	if status := body.Status; status != "OK" {
-		return "", errors.New(status)
+		return nil, errors.New(status)
 	}
 
-	return body.Routes[0].OverviewPolyline.Points, nil
+	return []byte(body.Routes[0].OverviewPolyline.Points), nil
 }
