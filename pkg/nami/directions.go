@@ -14,6 +14,10 @@ const (
 type DirectionPolyline []byte
 
 func (d *Nami) findDirectionPolyline(origin, destination, apiKey string) (DirectionPolyline, error) {
+	if destination == "" {
+		return nil, nil
+	}
+
 	key := generateDirectionKey(origin, destination)
 	if value, ok := d.store.Get(key); ok {
 		return DirectionPolyline(value), nil

@@ -42,8 +42,12 @@ func (d *Nami) FindStaticMap(origin, destination, apiKey string) (StaticMap, err
 func buildStaticMapURL(origin string, polyline DirectionPolyline, apiKey string) string {
 	u := url.Values{}
 	u.Add("center", origin)
+	u.Add("zoom", "14")
 	u.Add("size", "400x400")
-	u.Add("path", fmt.Sprintf("weight:5|color:blue|enc:%s", polyline))
 	u.Add("key", apiKey)
+
+	if polyline != nil {
+		u.Add("path", fmt.Sprintf("weight:5|color:blue|enc:%s", polyline))
+	}
 	return staticmapURL + u.Encode()
 }
