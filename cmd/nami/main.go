@@ -10,13 +10,13 @@ import (
 )
 
 func main() {
-	client := newClient()
-	expiration := parseExpiration()
+	client := newRedisClient()
+	expiration := parseRedisExpiration()
 
 	server.NewServer(client, expiration).Start()
 }
 
-func newClient() *redis.Client {
+func newRedisClient() *redis.Client {
 	client := redis.NewClient(&redis.Options{
 		Addr: os.Getenv("REDIS_URL"),
 	})
@@ -27,7 +27,7 @@ func newClient() *redis.Client {
 	return client
 }
 
-func parseExpiration() time.Duration {
+func parseRedisExpiration() time.Duration {
 	value, _ := strconv.Atoi(os.Getenv("REDIS_EXPIRATION"))
 	return time.Duration(value)
 }
