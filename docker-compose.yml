@@ -3,7 +3,7 @@ version: '3.5'
 services:
   app:
     build: .
-    command: ["./scripts/wait-for-it.sh", "db:6379", "--", "./scripts/run.sh"]
+    command: ["./scripts/wait-for-it.sh", "${REDIS_URL}", "--", "./scripts/run.sh"]
     environment:
       - REDIS_URL=${REDIS_URL}
       - REDIS_EXPIRATION=${REDIS_EXPIRATION}
