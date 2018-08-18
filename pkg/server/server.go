@@ -8,6 +8,7 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/gorilla/mux"
 
+	"github.com/cfx-cv/herald/pkg/common"
 	"github.com/cfx-cv/nami/pkg/nami"
 	dredis "github.com/cfx-cv/nami/pkg/redis"
 )
@@ -32,5 +33,6 @@ func (s *Server) Start() {
 	err := http.ListenAndServe(":80", router)
 	if err != nil {
 		log.Fatal(err)
+		common.Publish(common.NamiErrors, err.Error())
 	}
 }

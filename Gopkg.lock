@@ -2,6 +2,15 @@
 
 
 [[projects]]
+  branch = "master"
+  digest = "1:6c52a719049893f82f6a2f4366c6f68ae48b1481207d944af374de10618e38fa"
+  name = "github.com/cfx-cv/herald"
+  packages = ["pkg/common"]
+  pruneopts = "UT"
+  revision = "a07494a083915a0f0a9659b20644c94d0c90bb8c"
+
+[[projects]]
+  digest = "1:991bb96360eb8db70a40e9c496769fe6a7bbac4047f8376494d9837397078327"
   name = "github.com/go-redis/redis"
   packages = [
     ".",
@@ -11,26 +20,35 @@
     "internal/pool",
     "internal/proto",
     "internal/singleflight",
-    "internal/util"
+    "internal/util",
   ]
+  pruneopts = "UT"
   revision = "480db94d33e6088e08d628833b6c0705451d24bb"
   version = "v6.13.2"
 
 [[projects]]
+  digest = "1:c79fb010be38a59d657c48c6ba1d003a8aa651fa56b579d959d74573b7dff8e1"
   name = "github.com/gorilla/context"
   packages = ["."]
+  pruneopts = "UT"
   revision = "08b5f424b9271eedf6f9f0ce86cb9396ed337a42"
   version = "v1.1.1"
 
 [[projects]]
+  digest = "1:e73f5b0152105f18bc131fba127d9949305c8693f8a762588a82a48f61756f5f"
   name = "github.com/gorilla/mux"
   packages = ["."]
+  pruneopts = "UT"
   revision = "e3702bed27f0d39777b0b37b664b6280e8ef8fbf"
   version = "v1.6.2"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "93ea8e37839583d41c8b1055ce6feed952bf1240ba61446b4c074077c147acd5"
+  input-imports = [
+    "github.com/cfx-cv/herald/pkg/common",
+    "github.com/go-redis/redis",
+    "github.com/gorilla/mux",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

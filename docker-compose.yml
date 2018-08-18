@@ -5,6 +5,7 @@ services:
     build: .
     command: ["./scripts/wait-for-it.sh", "${REDIS_URL}", "--", "./scripts/run.sh"]
     environment:
+      - HERALD_URI=${HERALD_URI}
       - REDIS_URL=${REDIS_URL}
       - REDIS_EXPIRATION=${REDIS_EXPIRATION}
     volumes:
